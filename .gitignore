@@ -1,0 +1,5 @@
+uno.py
+dos.py
+*.pdf
+query_data.py
+.venv
