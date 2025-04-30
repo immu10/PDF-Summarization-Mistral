@@ -1,6 +1,6 @@
 # 🧠 Document Summarization App with Mistral
 
-This is a lightweight Streamlit-based app (`tres.py`) that summarizes PDF documents using a locally running LLaMA 2 model through the Ollama backend.
+This is a lightweight Streamlit-based app (`tres.py`) that summarizes PDF documents using a locally running Mistral model through the Ollama backend.
 
 ## 🚀 Features
 - Accepts PDF file uploads and summarizes their content.
