@@ -5,7 +5,7 @@ This is a lightweight Streamlit-based app (`tres.py`) that summarizes PDF docume
 ## 🚀 Features
 - Accepts PDF file uploads and summarizes their content.
 - Uses LangChain for document loading and text splitting.
-- Powered by Mistral — we initially aimed for LLaMA 3.3, but it exceeded local hardware limits (33.7 GiB RAM required vs. 19.9 GiB available).
+- Powered by Mistral — we initially aimed for LLaMA 3.3, but it exceeded local hardware limits (33.7 GiB RAM required for LLaMa 3.3).
 - Simple text prompt input included via a textbox.
 - The summarization output is displayed alongside the uploaded document.
 
