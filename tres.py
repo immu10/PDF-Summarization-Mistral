@@ -3,7 +3,7 @@ from langchain.document_loaders import PyPDFLoader, TextLoader
 from docx import Document
 import docx2txt  # For .doc files
 
-from gTTS import gTTS
+from gtts import gTTS
 import os
 import ollama
 
