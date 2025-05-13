@@ -3,7 +3,6 @@ import tres
 import streamlit as st
 
 import base64
-import ollama
 
 
 @st.cache_data
