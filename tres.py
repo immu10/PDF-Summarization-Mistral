@@ -11,7 +11,7 @@ def generate_tts(text, filename="output.mp3"):
     tts = gTTS(text)
     tts.save(filename)
     return filename
-#st.audio("output.mp3")
+
 
 def file_preprocessing(file, filetype):
     if filetype == 'pdf':
@@ -45,8 +45,8 @@ def file_preprocessing(file, filetype):
         raise ValueError("Unsupported file type")
 
 
-def llm_pipeline(filepath,msg,temperature):
-    input_text = file_preprocessing(filepath)
+def llm_pipeline(filepath,msg,temperature,filetype):
+    input_text = file_preprocessing(filepath,filetype)
     summaries = []
     for chunk in input_text:
         prompt =f"\n{msg}\n{chunk.page_content}"

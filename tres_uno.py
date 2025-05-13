@@ -3,7 +3,7 @@ import tres
 import streamlit as st
 
 import base64
-
+import os
 
 @st.cache_data
 
@@ -45,9 +45,7 @@ def main():
         st.session_state.captured_text = user_input
         st.success(f"Captured Text: {st.session_state.captured_text}")
 
-    uploaded_file = st.file_uploader("Upload your PDF file", type=['pdf','doc','docx','txt'])
-    filetype = get_filetype(uploaded_file.name)
-
+   
     temperature = st.slider(
         "Set the model's creativity (temperature):", 
         min_value=0.0, 
@@ -55,8 +53,12 @@ def main():
         value=0.7, 
         step=0.1
     )
-
+    
+    uploaded_file = st.file_uploader("Upload your PDF file", type=['pdf','doc','docx','txt'])
     if uploaded_file is not None:
+        
+        filetype = get_filetype(uploaded_file.name)
+        
         if st.button("Summarize"):
             col1, col2 = st.columns(2)
             filepath = "data/" + uploaded_file.name
@@ -72,7 +74,13 @@ def main():
                     summary = tres.llm_pipeline(filepath, st.session_state.captured_text, temperature, filetype)
                 else:
                     st.error("Unsupported file type")
-                st.info(st.session_state.captured_text)
+                # st.info(st.session_state.captured_text)
+                tres.generate_tts(summary)
+                if os.path.exists("output.mp3"):
+                    with open("output.mp3", "rb") as audio_file:
+                       st.audio(audio_file.read(), format="audio/mp3")
+                
                 st.success(summary)
+                
 if __name__ == "__main__":
     main()
