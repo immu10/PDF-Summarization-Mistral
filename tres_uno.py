@@ -39,6 +39,9 @@ def displayTextContent(text):
 
 
 def main():
+    global explanation
+    explanation = None
+    spawn_da_box = False
     st.title("Document Summarization App using Language Model")
 
     col1, col2 = st.columns(2)
@@ -55,40 +58,53 @@ def main():
 
         if st.button("Submit"):
             st.session_state.captured_text = user_input
-            st.success(f"Captured Text: {st.session_state.captured_text}")
+            # st.success(f"Captured Text: {st.session_state.captured_text}") # debugging line
 
-        else:
-            st.warning("File preview not supported for this format.")
+        # else:
+        #     st.warning("File preview not supported for this format.") samething as ^
 
     with col2:
         st.subheader("Explain Word or Sentence")
         input_to_explain = st.text_input("Type a word or sentence:")
 
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
-            if st.button("Explain using LLM"):
+            if st.button("Explain"):
                 if input_to_explain.strip():
                     explanation = tres.explain_text(input_to_explain)
-                    st.text_area("Explanation", explanation, height=150)
+                    spawn_da_box = True
                 else:
                     st.warning("Please enter something to explain.")
         with col2:    
             if st.button("Lookup"):
                 if input_to_explain.strip():
                     explanation = tres.explain_with_wordnet(input_to_explain.strip())
-                    st.text_area("Definition", explanation, height=150)
+                    spawn_da_box = True
                 else:
                     st.warning("Enter a word first.")
+        with col3:
+            if st.button("Listen"):
+                if input_to_explain.strip():
+                    tres.generate_tts(input_to_explain.strip(),"phrase.mp3") #the tts generation fucntion 
+                    if os.path.exists("phrase.mp3"):
+                        with open("phrase.mp3", "rb") as audio_file:
+                            st.audio(audio_file.read(), format="audio/mp3")
+                    
+                else:
+                    st.warning("Enter a word first.")
+    if spawn_da_box:    
+        st.text_area("Definition", explanation, height=150)
     len = st.slider(
         "length of summary", 
         min_value=1.1, 
         max_value=4.0, 
         value=2.0, 
-        step=0.1
+        step=0.1,
+        format="%d"
     )
     
 
-    uploaded_file = st.file_uploader("Upload your PDF file", type=['pdf','doc','docx','txt'])
+    uploaded_file = st.file_uploader("Upload your PDF file", type=['pdf','docx','txt'])
     if uploaded_file is not None:
         
         filetype = get_filetype(uploaded_file.name)
@@ -117,7 +133,7 @@ def main():
                 else:
                     st.error("Unsupported file type")
                 # st.info(st.session_state.captured_text) for debugging
-                # tres.generate_tts(summary)
+                tres.generate_tts(summary) #the tts generation fucntion 
                 if os.path.exists("output.mp3"):
                     with open("output.mp3", "rb") as audio_file:
                        st.audio(audio_file.read(), format="audio/mp3")

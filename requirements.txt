@@ -1,0 +1,12 @@
+
+#if you run into issues with pyandoc run these next 3 lines in cmd without #
+#python
+#import pypandoc
+#pypandoc.download_pandoc()
+
+
+os
+base64
+pypandocos
+streamlit
+pyttsx3

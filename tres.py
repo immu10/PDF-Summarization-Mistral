@@ -6,11 +6,18 @@ from gtts import gTTS
 from nltk.corpus import wordnet
 import docx2txt  # For .doc files
 import ollama
+import pyttsx3
 
 
 def generate_tts(text, filename="output.mp3"):
-    tts = gTTS(text)
-    tts.save(filename)
+    engine = pyttsx3.init()
+    engine.setProperty('rate', 180)  # Words per minute
+    engine.setProperty('volume', 1.0)  # Volume: 0.0 to 1.0
+
+    # Save to file
+    engine.save_to_file(text, filename)
+    engine.runAndWait()
+
     return filename
 
 
@@ -62,7 +69,7 @@ def explain_with_wordnet(word):
     return explanation.strip()
     
 def explain_text(text): # the definitions etc
-    prompt = f"Explain the following word or sentence in simple terms: '{text}'"
+    prompt = f"Explain the following word or sentence in very simple terms and concisely: '{text}'"
     response = ollama.generate(
         model='mistral',
         prompt=prompt,
@@ -75,12 +82,9 @@ def explain_text(text): # the definitions etc
     return response['response']
 
 def llm_pipeline(filepath,msg,filetype,len):
-    num = len*1000
-    chunk_size = int(num)
-    num2= len*100
-    chunk_overlap=int(num2)
-    num1 = (len-1)*250
-    max_tokens = int(num1)
+    chunk_size = int(len*1000)
+    chunk_overlap=int(len*100)
+    max_tokens = int((len-1)*250)
     input_text = file_preprocessing(filepath,filetype,chunk_size,chunk_overlap)
     summaries = []
     for chunk in input_text:
