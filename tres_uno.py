@@ -1,7 +1,7 @@
 
 import tres
 import streamlit as st
-
+import pypandoc
 import base64
 import os
 
@@ -27,6 +27,16 @@ def get_filetype(filename):
     else:
         return None
     
+def convert_to_txt(input_path):
+    try:
+        output = pypandoc.convert_file(input_path, 'plain')
+        return output
+    except Exception as e:
+        return f"Error converting file: {e}"
+    
+def displayTextContent(text):
+    st.markdown(f"<div style='white-space: pre-wrap; font-family: monospace;'>{text}</div>", unsafe_allow_html=True)
+
 
 def main():
     st.title("Document Summarization App using Language Model")
@@ -46,6 +56,9 @@ def main():
         if st.button("Submit"):
             st.session_state.captured_text = user_input
             st.success(f"Captured Text: {st.session_state.captured_text}")
+
+        else:
+            st.warning("File preview not supported for this format.")
 
     with col2:
         st.subheader("Explain Word or Sentence")
@@ -87,7 +100,15 @@ def main():
                 temp_file.write(uploaded_file.read())
             with col1:
                 st.info("Uploaded File")
-                pdf_view = displayPDF(filepath)
+                if filetype == 'pdf':
+                    displayPDF(filepath)
+                elif filetype in ['doc', 'docx']:
+                    text_content = convert_to_txt(filepath)
+                    displayTextContent(text_content)
+                elif filetype == 'txt':
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        text_content = f.read()
+                    displayTextContent(text_content)
 
             with col2:
                 print(st.session_state.captured_text)
