@@ -5,8 +5,8 @@ import docx2txt  # For .doc files
 
 from gTTS import gTTS
 import os
-# import base64
 import ollama
+
 def generate_tts(text, filename="output.mp3"):
     tts = gTTS(text)
     tts.save(filename)
