@@ -9,7 +9,7 @@ import ollama
 def file_preprocessing(file):
     loader =PyPDFLoader(file)
     pages = loader.load_and_split()
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=200, chunk_overlap=50)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     texts = text_splitter.split_documents(pages)
 
     final_texts= "" 
