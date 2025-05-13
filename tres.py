@@ -43,7 +43,19 @@ def file_preprocessing(file, filetype,len,olap):
 
     else:
         raise ValueError("Unsupported file type")
-
+    
+def explain_text(text):
+    prompt = f"Explain the following word or sentence in simple terms: '{text}'"
+    response = ollama.generate(
+        model='mistral',
+        prompt=prompt,
+        options={
+            'temperature': 0.5,
+            'max_tokens': 300,
+            'top_p': 0.8
+        }
+    )
+    return response['response']
 
 def llm_pipeline(filepath,msg,filetype,len):
     num = len*1000

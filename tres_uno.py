@@ -31,26 +31,38 @@ def get_filetype(filename):
 def main():
     st.title("Document Summarization App using Language Model")
 
-    # Initialize session_state if it doesn't exist
-    if "captured_text" not in st.session_state:
-        st.session_state.captured_text = "Summarize the attached pdf."
+    col1, col2 = st.columns(2)
 
-    # Textbox with default text
-    user_input = st.text_area(
-        "Enter your text below:",
-        value=st.session_state.captured_text
-    )
+    with col1:
+        if "captured_text" not in st.session_state:
+            st.session_state.captured_text = "Summarize the attached pdf."
 
-    if st.button("Submit"):
-        st.session_state.captured_text = user_input
-        st.success(f"Captured Text: {st.session_state.captured_text}")
+        user_input = st.text_area(
+            "Enter your text below:",
+            value=st.session_state.captured_text,
+            height=150
+        )
 
+        if st.button("Submit"):
+            st.session_state.captured_text = user_input
+            st.success(f"Captured Text: {st.session_state.captured_text}")
+
+    with col2:
+        st.subheader("Explain Word or Sentence")
+        input_to_explain = st.text_input("Type a word or sentence:")
+
+        if st.button("Explain"):
+            if input_to_explain.strip():
+                explanation = tres.explain_text(input_to_explain)
+                st.text_area("Explanation", explanation, height=150)
+            else:
+                st.warning("Please enter something to explain.")
    
     len = st.slider(
         "length of summary", 
         min_value=1.1, 
-        max_value=8.0, 
-        value=1.5, 
+        max_value=4.0, 
+        value=2.0, 
         step=0.1
     )
     
