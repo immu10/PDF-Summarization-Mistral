@@ -21,19 +21,21 @@ def file_preprocessing(file):
 
 def llm_pipeline(filepath,msg,temperature):
     input_text = file_preprocessing(filepath)
-    prompt =f"\n{msg}\n{input_text}"
-    response = ollama.generate(
-		model='mistral',
-		prompt=prompt,
-		options={
-			'temperature':temperature,
-			'max_tokens': 50000,
-			'top_p': 0.5
-		}
-	)
+    summaries = []
+    for chunk in input_texts:
+        prompt =f"\n{msg}\n{input_text}"
+        response = ollama.generate(
+            model='mistral',
+            prompt=prompt,
+            options={
+                'temperature':temperature,
+                'max_tokens': 5000,
+                'top_p': 0.5
+            }
+        )
+    summaries.append(response['response'])
 
-    result = response['response']
-    return result
+    return "\n\n".join(summaries)
 
 @st.cache_data
 
