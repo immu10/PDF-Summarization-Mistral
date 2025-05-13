@@ -49,7 +49,7 @@ def main():
     len = st.slider(
         "length of summary", 
         min_value=1.1, 
-        max_value=2.0, 
+        max_value=8.0, 
         value=1.5, 
         step=0.1
     )

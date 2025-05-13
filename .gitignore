@@ -5,3 +5,5 @@ query_data.py
 .venv
 __pycache__/tres.cpython-313.pyc
 output.mp3
+data
+pdfs

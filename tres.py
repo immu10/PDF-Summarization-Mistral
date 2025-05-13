@@ -48,9 +48,9 @@ def file_preprocessing(file, filetype,len,olap):
 def llm_pipeline(filepath,msg,filetype,len):
     num = len*1000
     chunk_size = int(num)
-    num2= len*200
+    num2= len*100
     chunk_overlap=int(num2)
-    num1 = (len-1)*500
+    num1 = (len-1)*250
     max_tokens = int(num1)
     input_text = file_preprocessing(filepath,filetype,chunk_size,chunk_overlap)
     summaries = []
