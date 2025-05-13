@@ -38,7 +38,7 @@ def main():
             st.session_state.captured_text = "Summarize the attached pdf."
 
         user_input = st.text_area(
-            "Enter your text below:",
+            "Enter prompt/questions:",
             value=st.session_state.captured_text,
             height=150
         )
@@ -51,13 +51,21 @@ def main():
         st.subheader("Explain Word or Sentence")
         input_to_explain = st.text_input("Type a word or sentence:")
 
-        if st.button("Explain"):
-            if input_to_explain.strip():
-                explanation = tres.explain_text(input_to_explain)
-                st.text_area("Explanation", explanation, height=150)
-            else:
-                st.warning("Please enter something to explain.")
-   
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Explain using LLM"):
+                if input_to_explain.strip():
+                    explanation = tres.explain_text(input_to_explain)
+                    st.text_area("Explanation", explanation, height=150)
+                else:
+                    st.warning("Please enter something to explain.")
+        with col2:    
+            if st.button("Lookup"):
+                if input_to_explain.strip():
+                    explanation = tres.explain_with_dictionary(input_to_explain.strip())
+                    st.text_area("Definition", explanation, height=150)
+                else:
+                    st.warning("Enter a word first.")
     len = st.slider(
         "length of summary", 
         min_value=1.1, 
