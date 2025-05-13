@@ -2,13 +2,13 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import PyPDFLoader
 from gTTS import gTTS
 import os
-# import base64
 import ollama
+
 def generate_tts(text, filename="output.mp3"):
     tts = gTTS(text)
     tts.save(filename)
     return filename
-
+#st.audio("output.mp3")
 
 def file_preprocessing(file):
     loader =PyPDFLoader(file)
