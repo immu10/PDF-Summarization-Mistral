@@ -8,7 +8,7 @@ def generate_tts(text, filename="output.mp3"):
     tts = gTTS(text)
     tts.save(filename)
     return filename
-#st.audio("output.mp3")
+
 
 def file_preprocessing(file):
     loader =PyPDFLoader(file)
