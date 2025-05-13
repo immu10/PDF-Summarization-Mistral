@@ -44,7 +44,7 @@ def file_preprocessing(file, filetype,len,olap):
     else:
         raise ValueError("Unsupported file type")
     
-def explain_text(text):
+def explain_text(text): # the definitions etc
     prompt = f"Explain the following word or sentence in simple terms: '{text}'"
     response = ollama.generate(
         model='mistral',
