@@ -1,10 +1,12 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import PyPDFLoader, TextLoader
 from docx import Document
-import docx2txt  # For .doc files
-from PyDictionary import PyDictionary
+from PyDictionary import PyDictionary #didnt work
 from gtts import gTTS
+from nltk.corpus import wordnet
+import docx2txt  # For .doc files
 import ollama
+
 
 def generate_tts(text, filename="output.mp3"):
     tts = gTTS(text)
@@ -44,17 +46,20 @@ def file_preprocessing(file, filetype,len,olap):
         raise ValueError("Unsupported file type")
 dictionary = PyDictionary()
 
-def explain_with_dictionary(word):
-    meaning = dictionary.meaning(word)
-    if meaning:
-        explanation = ""
-        for part_of_speech, defs in meaning.items():
-            explanation += f"{part_of_speech}:\n"
-            for d in defs:
-                explanation += f"• {d}\n"
-        return explanation
-    else:
+def explain_with_wordnet(word):
+    synsets = wordnet.synsets(word)
+    if not synsets:
         return "Sorry, no meaning found."
+
+    explanation = ""
+    for i, syn in enumerate(synsets[:2]):  # Limit to top 2 meanings
+        definition = syn.definition()
+        examples = syn.examples()
+        explanation += f"{i+1}. {definition}\n"
+        if examples:
+            explanation += f"   e.g., {examples[0]}\n"
+
+    return explanation.strip()
     
 def explain_text(text): # the definitions etc
     prompt = f"Explain the following word or sentence in simple terms: '{text}'"

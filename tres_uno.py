@@ -62,7 +62,7 @@ def main():
         with col2:    
             if st.button("Lookup"):
                 if input_to_explain.strip():
-                    explanation = tres.explain_with_dictionary(input_to_explain.strip())
+                    explanation = tres.explain_with_wordnet(input_to_explain.strip())
                     st.text_area("Definition", explanation, height=150)
                 else:
                     st.warning("Enter a word first.")
