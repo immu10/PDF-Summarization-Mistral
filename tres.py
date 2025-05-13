@@ -11,6 +11,10 @@ def generate_tts(text, filename="output.mp3"):
     tts = gTTS(text)
     tts.save(filename)
     return filename
+<<<<<<< HEAD
+=======
+
+>>>>>>> cc392390de39e1b3a8201c88f2841132b7a122b9
 
 def file_preprocessing(file, filetype):
     if filetype == 'pdf':
