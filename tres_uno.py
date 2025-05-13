@@ -100,7 +100,6 @@ def main():
         max_value=4.0, 
         value=2.0, 
         step=0.1,
-        format="%d"
     )
     
 
