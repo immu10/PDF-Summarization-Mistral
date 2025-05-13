@@ -3,3 +3,4 @@ dos.py
 *.pdf
 query_data.py
 .venv
+__pycache__/tres.cpython-313.pyc
