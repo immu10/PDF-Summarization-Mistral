@@ -48,9 +48,9 @@ def main():
    
     len = st.slider(
         "length of summary", 
-        min_value=0.1, 
+        min_value=1.1, 
         max_value=2.0, 
-        value=1.0, 
+        value=1.5, 
         step=0.1
     )
     
@@ -76,7 +76,7 @@ def main():
                 else:
                     st.error("Unsupported file type")
                 # st.info(st.session_state.captured_text) for debugging
-                tres.generate_tts(summary)
+                # tres.generate_tts(summary)
                 if os.path.exists("output.mp3"):
                     with open("output.mp3", "rb") as audio_file:
                        st.audio(audio_file.read(), format="audio/mp3")

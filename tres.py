@@ -13,31 +13,31 @@ def generate_tts(text, filename="output.mp3"):
     return filename
 
 
-def file_preprocessing(file, filetype,len):
+def file_preprocessing(file, filetype,len,olap):
     if filetype == 'pdf':
         loader = PyPDFLoader(file)
         pages = loader.load_and_split()
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=len, chunk_overlap=200)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=len, chunk_overlap=olap)
         texts = text_splitter.split_documents(pages)
         return texts
 
     elif filetype == 'docx':
         doc = Document(file)
         full_text = "\n".join([para.text for para in doc.paragraphs])
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size = len, chunk_overlap=200)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size = len, chunk_overlap=olap)
         texts = text_splitter.create_documents([full_text])
         return texts
 
     elif filetype == 'doc':
         full_text = docx2txt.process(file)
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size = len, chunk_overlap=200)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size = len, chunk_overlap=olap)
         texts = text_splitter.create_documents([full_text])
         return texts
 
     elif filetype == 'txt':
         with open(file, 'r', encoding='utf-8') as f:
             full_text = f.read()
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size = len, chunk_overlap=200)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size = len, chunk_overlap=olap)
         texts = text_splitter.create_documents([full_text])
         return texts
 
@@ -46,11 +46,13 @@ def file_preprocessing(file, filetype,len):
 
 
 def llm_pipeline(filepath,msg,filetype,len):
-    num = 500
+    num = len*1000
     chunk_size = int(num)
-    num1 = len* 500
+    num2= len*200
+    chunk_overlap=int(num2)
+    num1 = (len-1)*500
     max_tokens = int(num1)
-    input_text = file_preprocessing(filepath,filetype,chunk_size)
+    input_text = file_preprocessing(filepath,filetype,chunk_size,chunk_overlap)
     summaries = []
     for chunk in input_text:
         prompt =f"\n{msg}\n{chunk.page_content}"
@@ -58,7 +60,7 @@ def llm_pipeline(filepath,msg,filetype,len):
             model='mistral',
             prompt=prompt,
             options={
-                'temperature':0.,
+                'temperature':0.7,
                 'max_tokens': max_tokens,
                 'top_p': 0.5
             }
