@@ -31,7 +31,7 @@ def main():
         st.session_state.captured_text = user_input
         st.success(f"Captured Text: {st.session_state.captured_text}")
 
-    uploaded_file = st.file_uploader("Upload your PDF file", type=['pdf'])
+    uploaded_file = st.file_uploader("Upload your PDF file", type=['pdf','doc','docx','txt'])
     temperature = st.slider(
         "Set the model's creativity (temperature):", 
         min_value=0.0, 
@@ -52,7 +52,7 @@ def main():
 
             with col2:
                 print(st.session_state.captured_text)
-                summary = llm_pipeline(filepath, st.session_state.captured_text,temperature)
+                summary = tres.llm_pipeline(filepath, st.session_state.captured_text,temperature)
                 st.info(st.session_state.captured_text)
                 st.success(summary)
 if __name__ == "__main__":
