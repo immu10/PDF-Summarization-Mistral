@@ -19,15 +19,15 @@ def file_preprocessing(file):
     return final_texts
 
 
-def llm_pipeline(filepath,msg):
+def llm_pipeline(filepath,msg,temperature):
     input_text = file_preprocessing(filepath)
     prompt =f"\n{msg}\n{input_text}"
     response = ollama.generate(
 		model='mistral',
 		prompt=prompt,
 		options={
-			'temperature':0.7,
-			'max_tokens': 500,
+			'temperature':temperature,
+			'max_tokens': 50000,
 			'top_p': 0.5
 		}
 	)
@@ -49,7 +49,7 @@ def main():
 
     # Initialize session_state if it doesn't exist
     if "captured_text" not in st.session_state:
-        st.session_state.captured_text = "This is the default text."
+        st.session_state.captured_text = "Summarize the attached pdf."
 
     # Textbox with default text
     user_input = st.text_area(
@@ -62,6 +62,13 @@ def main():
         st.success(f"Captured Text: {st.session_state.captured_text}")
 
     uploaded_file = st.file_uploader("Upload your PDF file", type=['pdf'])
+    temperature = st.slider(
+        "Set the model's creativity (temperature):", 
+        min_value=0.0, 
+        max_value=1.0, 
+        value=0.7, 
+        step=0.1
+    )
 
     if uploaded_file is not None:
         if st.button("Summarize"):
@@ -75,7 +82,7 @@ def main():
 
             with col2:
                 print(st.session_state.captured_text)
-                summary = llm_pipeline(filepath, st.session_state.captured_text)
+                summary = llm_pipeline(filepath, st.session_state.captured_text,temperature)
                 st.info(st.session_state.captured_text)
                 st.success(summary)
 if __name__ == "__main__":
