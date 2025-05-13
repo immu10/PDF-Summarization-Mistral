@@ -46,14 +46,15 @@ def main():
         st.success(f"Captured Text: {st.session_state.captured_text}")
 
    
-    temperature = st.slider(
-        "Set the model's creativity (temperature):", 
-        min_value=0.0, 
-        max_value=1.0, 
-        value=0.7, 
+    len = st.slider(
+        "length of summary", 
+        min_value=0.1, 
+        max_value=2.0, 
+        value=1.0, 
         step=0.1
     )
     
+
     uploaded_file = st.file_uploader("Upload your PDF file", type=['pdf','doc','docx','txt'])
     if uploaded_file is not None:
         
@@ -71,10 +72,10 @@ def main():
             with col2:
                 print(st.session_state.captured_text)
                 if filetype:
-                    summary = tres.llm_pipeline(filepath, st.session_state.captured_text, temperature, filetype)
+                    summary = tres.llm_pipeline(filepath, st.session_state.captured_text,filetype,len)
                 else:
                     st.error("Unsupported file type")
-                # st.info(st.session_state.captured_text)
+                # st.info(st.session_state.captured_text) for debugging
                 tres.generate_tts(summary)
                 if os.path.exists("output.mp3"):
                     with open("output.mp3", "rb") as audio_file:
