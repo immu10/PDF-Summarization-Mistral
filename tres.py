@@ -49,7 +49,7 @@ dictionary = PyDictionary()
 def explain_with_wordnet(word):
     synsets = wordnet.synsets(word)
     if not synsets:
-        return "Sorry, no meaning found."
+        return "Sorry, no meaning found. This function only works with singular word look ups no phrases. Kindly use the other one"
 
     explanation = ""
     for i, syn in enumerate(synsets[:2]):  # Limit to top 2 meanings
