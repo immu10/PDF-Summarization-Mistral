@@ -10,7 +10,7 @@ def file_preprocessing(file):
     pages = loader.load_and_split()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     texts = text_splitter.split_documents(pages)
-    #ignore this for now
+    #ignore this for now 
     # final_texts= "" 
     # for  text in texts:
     #    # print(text)
