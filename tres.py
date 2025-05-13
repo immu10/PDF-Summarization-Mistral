@@ -12,28 +12,28 @@ def file_preprocessing(file):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     texts = text_splitter.split_documents(pages)
 
-    final_texts= "" 
-    for  text in texts:
-       # print(text)
-        final_texts = final_texts +text.page_content
-    return final_texts
+    # final_texts= "" 
+    # for  text in texts:
+    #    # print(text)
+    #     final_texts = final_texts +text.page_content
+    return texts
 
 
 def llm_pipeline(filepath,msg,temperature):
     input_text = file_preprocessing(filepath)
     summaries = []
-    for chunk in input_texts:
-        prompt =f"\n{msg}\n{input_text}"
+    for chunk in input_text:
+        prompt =f"\n{msg}\n{chunk.page_content}"
         response = ollama.generate(
             model='mistral',
             prompt=prompt,
             options={
                 'temperature':temperature,
-                'max_tokens': 5000,
+                'max_tokens': 500,
                 'top_p': 0.5
             }
         )
-    summaries.append(response['response'])
+        summaries.append(response['response'])
 
     return "\n\n".join(summaries)
 
