@@ -40,7 +40,7 @@ def displayTextContent(text):
 
 def main():
     global explanation
-    global uploaded_file 
+    global uploaded_file
     uploaded_file = None
     explanation = None
     spawn_da_box = False
@@ -61,8 +61,8 @@ def main():
         if promptbutton:
             st.session_state.captured_text = user_input
             # st.success(f"Captured Text: {st.session_state.captured_text}") # debugging line
-        if promptbutton and uploaded_file is None:
-            st.warning("Upload file first")
+        #if promptbutton and uploaded_file is None:
+            #st.warning("Upload file first")
         # else:
         #     st.warning("File preview not supported for this format.") samething as ^
 
@@ -120,7 +120,7 @@ def main():
                 st.info("Uploaded File")
                 if filetype == 'pdf':
                     displayPDF(filepath)
-                elif filetype in ['doc', 'docx']:
+                elif filetype == 'docx':
                     text_content = convert_to_txt(filepath)
                     displayTextContent(text_content)
                 elif filetype == 'txt':
