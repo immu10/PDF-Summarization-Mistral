@@ -36,12 +36,6 @@ def file_preprocessing(file, filetype,len,olap):
         texts = text_splitter.create_documents([full_text])
         return texts
 
-    elif filetype == 'doc':
-        full_text = docx2txt.process(file)
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size = len, chunk_overlap=olap)
-        texts = text_splitter.create_documents([full_text])
-        return texts
-
     elif filetype == 'txt':
         with open(file, 'r', encoding='utf-8') as f:
             full_text = f.read()
