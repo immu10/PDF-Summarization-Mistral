@@ -40,6 +40,8 @@ def displayTextContent(text):
 
 def main():
     global explanation
+    global uploaded_file 
+    uploaded_file = None
     explanation = None
     spawn_da_box = False
     st.title("Document Summarization App using Language Model")
@@ -55,11 +57,12 @@ def main():
             value=st.session_state.captured_text,
             height=150
         )
-
-        if st.button("Submit"):
+        promptbutton = st.button("Submit")
+        if promptbutton:
             st.session_state.captured_text = user_input
             # st.success(f"Captured Text: {st.session_state.captured_text}") # debugging line
-
+        if promptbutton and uploaded_file is None:
+            st.warning("Upload file first")
         # else:
         #     st.warning("File preview not supported for this format.") samething as ^
 
