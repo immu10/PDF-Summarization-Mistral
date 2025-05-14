@@ -95,8 +95,8 @@ def main():
     if spawn_da_box:    
         st.text_area("Definition", explanation, height=150)
     len = st.slider(
-        "length of summary", 
-        min_value=1.1, 
+        "length of summary(1.00 for better explanation :: 4.00 for summarization):", 
+        min_value=1.0,  
         max_value=4.0, 
         value=2.0, 
         step=0.1,
@@ -128,7 +128,7 @@ def main():
             with col2:
                 print(st.session_state.captured_text)
                 if filetype:
-                    summary = tres.llm_pipeline(filepath, st.session_state.captured_text,filetype,len)
+                    summary = tres.llm_pipeline(filepath, st.session_state.captured_text,filetype,(len+0.1))
                 else:
                     st.error("Unsupported file type")
                 # st.info(st.session_state.captured_text) for debugging
